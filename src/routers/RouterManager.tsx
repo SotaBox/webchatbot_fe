@@ -1,5 +1,4 @@
 import {
-  Navigate,
   Route,
   RouterProvider,
   createBrowserRouter,
@@ -15,6 +14,7 @@ import Login from "src/pages/Login";
 import SiteMap from "src/pages/SiteMap";
 import { isAuthenticated } from "./helpers";
 import { Toaster } from "sonner";
+import NotFound from "src/pages/NotFound";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,10 +30,10 @@ const router = createBrowserRouter(
 
       {/* <Route element={<MainLayout />}> */}
       <Route element={<ProtectedRoute />}>
-        <Route path={PAGE.CHAT_BOT} element={<ChatBot />} />
-        <Route path={PAGE.SITEMAP} element={<SiteMap />} />
         <Route path={PAGE.CRAWL_DATA} element={<CrawlData />} />
-        <Route path="*" element={<Navigate to={PAGE.NOT_FOUND} />} />
+        <Route path={PAGE.SITEMAP} element={<SiteMap />} />
+        <Route path={PAGE.CHAT_BOT} element={<ChatBot />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
       {/* </Route> */}
     </Route>

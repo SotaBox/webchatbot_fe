@@ -2,9 +2,13 @@ import React from "react";
 
 function NotFound() {
   return (
-    <div>
-      <h1>404 Not found</h1>
-    </div>
+    <>
+      <div className="mt-40">
+        <h1 className="text-5xl text-black font-medium text-center">
+          404 NOT FOUND
+        </h1>
+      </div>
+    </>
   );
 }
 
