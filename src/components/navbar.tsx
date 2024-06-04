@@ -23,17 +23,17 @@ function NavBar() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="/sitemap">
+          <Link color="foreground" href={PAGE.SITEMAP}>
             Sitemap
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/crawl-data" aria-current="page">
+          <Link color="foreground" href={PAGE.CRAWL_DATA} aria-current="page">
             Crawl Data
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/chatbot">
+          <Link color="foreground" href={PAGE.CHAT_BOT}>
             ChatBot
           </Link>
         </NavbarItem>

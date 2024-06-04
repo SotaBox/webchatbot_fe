@@ -13,7 +13,6 @@ function Login() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<LoginRequest>({
     defaultValues: {
@@ -22,6 +21,7 @@ function Login() {
     },
   });
   const onSubmit: SubmitHandler<LoginRequest> = (data: LoginRequest) => {
+    toast.loading("Loading...");
     axios
       .post(`https://reqres.in/api/login`, {
         email: data.email,
@@ -31,7 +31,6 @@ function Login() {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           window.location.reload();
-          toast.loading("Loading...");
         }
       })
       .catch(() => {
@@ -87,9 +86,6 @@ function Login() {
             <Button type="submit" className="text-base" color="primary">
               Log In
             </Button>
-            {errors.root && (
-              <div className="text-red-500">{errors.root.message}</div>
-            )}
           </form>
         </div>
       </section>
