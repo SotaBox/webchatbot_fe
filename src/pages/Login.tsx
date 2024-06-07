@@ -1,4 +1,3 @@
-import { EyeDropperIcon, EyeIcon } from "@heroicons/react/16/solid";
 import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
 import React, { useState } from "react";

@@ -5,7 +5,7 @@ function DefaultLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative flex flex-col h-screen">
       <NavBar />
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
+      <main className="flex items-center justify-center min-h-screen ">
         {children}
       </main>
       <Footer />
