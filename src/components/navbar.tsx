@@ -9,10 +9,12 @@ import {
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
+import { authActions, useAppDispatch } from "src/store";
 function NavBar() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const logout = () => {
-    localStorage.removeItem("token");
+    dispatch(authActions.logout());
     navigate(PAGE.LOGIN);
   };
   return (

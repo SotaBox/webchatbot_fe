@@ -9,12 +9,15 @@ import { BASE_NAME, PAGE } from "src/constants/router";
 
 import { ProtectedRoute, PublicRoute } from "src/middleware";
 import ChatBot from "src/pages/ChatBot";
-import CrawlData from "src/pages/CrawlData";
+
 import Login from "src/pages/Login";
 import SiteMap from "src/pages/SiteMap";
 import { isAuthenticated } from "./helpers";
 import { Toaster } from "sonner";
 import NotFound from "src/pages/NotFound";
+import CrawlData from "src/pages/crawlData/CrawlData";
+import { Provider } from "react-redux";
+import { store } from "src/store";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,7 +49,9 @@ const router = createBrowserRouter(
 export function RouterManager() {
   return (
     <>
-      <Toaster position="top-center" /> <RouterProvider router={router} />
+      <Provider store={store}>
+        <Toaster position="top-center" /> <RouterProvider router={router} />
+      </Provider>
     </>
   );
 }

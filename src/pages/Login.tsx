@@ -1,8 +1,10 @@
 import { Button, Input } from "@nextui-org/react";
-import axios from "axios";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LoginRequest from "src/types/auth/LoginRequest";
+import { authActions, ILoginAuth, useAppDispatch } from "src/store";
+import { useNavigate } from "react-router-dom";
+import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
 
 function Login() {
@@ -12,34 +14,33 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginRequest>({
     defaultValues: {
-      email: "eve.holt@reqres.in",
-      password: "cityslicka",
+      username: "admin",
+      password: "admin",
     },
   });
-  const onSubmit: SubmitHandler<LoginRequest> = (data: LoginRequest) => {
-    toast.loading("Loading...");
-    axios
-      .post(`https://reqres.in/api/login`, {
-        email: data.email,
-        password: data.password,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
-          window.location.reload();
-        }
-      })
-      .catch(() => {
-        toast.error("Email or Password is wrong");
-      });
+  const nagative = useNavigate();
+  const dispatch = useAppDispatch();
+  const token: ILoginAuth = {
+    accessToken: "haioshd234jahida",
+    refreshToken: "haioshd234jahida",
+  };
+  const onSubmit: SubmitHandler<LoginRequest> = async (data: LoginRequest) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(data);
+      dispatch(authActions.login(token));
+      nagative(PAGE.SITEMAP);
+    } catch (error) {
+      toast.warning("Login fail !!!");
+    }
   };
   return (
     <>
-      <section className="flex items-center justify-center min-h-screen bg-slate-200">
-        <div className="container max-w-sm p-8 bg-white shadow-xl rounded-xl">
+      <section className="flex items-center justify-center min-h-screen bg-white">
+        <div className="container max-w-md p-8 bg-white ">
           <div className="flex flex-row space-x-1 my-10 justify-center">
             <span className="text-4xl font-bold">ChatBot</span>
             <svg
@@ -57,22 +58,28 @@ function Login() {
               />
             </svg>
           </div>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
             <Input
-              label="Email"
+              label="Username"
               labelPlacement="outside"
-              className="mt-4"
+              className="font-bold"
               type="text"
-              placeholder="Enter your email"
+              placeholder="Enter your username"
               variant="bordered"
-              {...register("email", { required: true })}
+              description={
+                errors.username && (
+                  <p className="text-red-500 text-xs">
+                    Username must be required
+                  </p>
+                )
+              }
+              {...register("username", { required: true })}
             />
-            {errors.email && (
-              <p className="text-red-500">Email must be required</p>
-            )}
+
             <Input
               label="Password"
               labelPlacement="outside"
@@ -123,15 +130,53 @@ function Login() {
                 </button>
               }
               type={isVisible ? "text" : "password"}
-              className="max-w-2xl"
-              {...register("password", { required: true })}
+              className="max-w-2xl font-bold"
+              description={
+                errors.password && (
+                  <p className="text-red-500 text-xs">Password is required</p>
+                )
+              }
+              {...register("password", {
+                required: true,
+              })}
             />
-            {errors.password && (
-              <p className="text-red-500">Password must be required</p>
-            )}
-            <Button type="submit" className="text-base" color="primary">
-              Log In
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="text-white text-md font-bold bg-sky-700 py-6"
+            >
+              {isSubmitting ? (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="size-5 animate-spin"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Loading ...
+                </>
+              ) : (
+                "Log In"
+              )}
             </Button>
+            <div className="text-center my-3 flex flex-row space-x-3 items-center justify-center">
+              <div className="text-gray-400 capitalize">
+                Don't Have An Account ?
+              </div>
+              <a
+                href=""
+                className=" text-sky-500 hover:opacity-60 duration-500"
+              >
+                Register Now
+              </a>
+            </div>
           </form>
         </div>
       </section>

@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import QueryString from "qs";
+import { useNavigate } from "react-router-dom";
+
+import { PAGE } from "src/constants/router";
 import { UserService } from "src/services";
 
 import { ReduxAuth, store } from "src/store";
@@ -59,7 +62,9 @@ axiosRequest.interceptors.response.use(
 
     if (status === 401) {
       if (!refreshToken) {
+        const nagative = useNavigate();
         ReduxAuth.logout();
+        nagative(PAGE.LOGIN);
         return Promise.reject(error);
       }
 
@@ -84,7 +89,9 @@ axiosRequest.interceptors.response.use(
             return axios(originalRequest);
           }
         } catch (error) {
+          const nagative = useNavigate();
           ReduxAuth.logout();
+          nagative(PAGE.LOGIN);
           return Promise.reject(error);
         } finally {
           isRefreshing = false;
