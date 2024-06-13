@@ -4,6 +4,6 @@ import { PAGE } from "src/constants/router";
 
 export const isAuthenticated = async () => {
   const token = Cookies.get("AccessToken");
-  if (token) throw redirect(PAGE.SITEMAP);
+  if (token) throw redirect(PAGE.CRAWL_DATA);
   return null;
 };
