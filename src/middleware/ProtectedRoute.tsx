@@ -5,7 +5,6 @@ import DefaultLayout from "src/layout/DefaultLayout";
 
 export function ProtectedRoute() {
   const token = Cookies.get("AccessToken");
-  console.log("Get token from proceted router", token);
   return token ? (
     <DefaultLayout>
       <Outlet />
