@@ -1,14 +1,14 @@
-import Footer from "src/components/Footer";
+import Header from "src/components/Header";
 import NavBar from "src/components/navbar";
 
 function DefaultLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="flex min-h-screen bg-gray-100">
       <NavBar />
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
-        {children}
-      </main>
-      <Footer />
+      <div className="flex flex-col w-full">
+        <Header />
+        <div>{children}</div>
+      </div>
     </div>
   );
 }
