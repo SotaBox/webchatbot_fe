@@ -1,24 +1,18 @@
-export const columns = [
-  { name: "ID", uid: "id" },
-  { name: "URL", uid: "url" },
-  { name: "CONTENT", uid: "content" },
-  { name: "VECTOR", uid: "vector" },
-  { name: "ACTIONS", uid: "actions" },
-];
+import { createSlice } from "@reduxjs/toolkit";
 
-export interface ISiteMap {
+type Url = {
   id: number;
   url: string;
   content: string;
   vector: string;
-}
+};
 
-interface ISiteMaps {
-  siteMaps: ISiteMap[];
-}
+type urlState = {
+  urls: Url[];
+};
 
-export const siteMaps: ISiteMaps = {
-  siteMaps: [
+const initialState: urlState = {
+  urls: [
     {
       id: 1,
       url: "https://laodong.vn/",
@@ -58,4 +52,14 @@ export const siteMaps: ISiteMaps = {
   ],
 };
 
-export default { columns, siteMaps };
+export const urlSlice = createSlice({
+  name: "url",
+  initialState,
+  reducers: {
+    createUrl() {},
+    editUrl() {},
+    deleteUrl() {},
+  },
+});
+
+export const { createUrl, editUrl, deleteUrl } = urlSlice.actions;

@@ -73,6 +73,7 @@ function Register() {
             className="flex flex-col gap-4"
           >
             <Input
+              autoFocus
               label="Username"
               labelPlacement="outside"
               className="font-bold"

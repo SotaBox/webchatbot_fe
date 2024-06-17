@@ -1,4 +1,4 @@
-import { Avatar, AvatarIcon } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Message from "src/types/chatbot/Message";
 
@@ -137,23 +137,12 @@ I don't have an age like humans do because I'm an artificial intelligence create
                     return (
                       <>
                         {q.role === UserRole.USER ? (
-                          <div className="flex flex-row justify-end space-x-4">
+                          <div className="flex flex-row justify-end space-x-4 mt-4">
                             <div className="flex flex-col space-y-1 rounded-lg shadow-md p-2">
-                              <h3 className="text-left text-black font-medium">
-                                You
-                              </h3>
                               <p className="text-black max-w-sm md:max-w-xl">
                                 {q.content}
                               </p>
                             </div>
-                            <Avatar
-                              icon={<AvatarIcon />}
-                              className="shadow-md flex"
-                              classNames={{
-                                base: "bg-gradient-to-br from-[#71717A] to-[#27272A]",
-                                icon: "text-white/80",
-                              }}
-                            />
                           </div>
                         ) : (
                           <div className="flex flex-row space-x-4">
@@ -190,9 +179,6 @@ I don't have an age like humans do because I'm an artificial intelligence create
                               }}
                             />
                             <div className="flex flex-col space-y-1 rounded-lg shadow-md p-2 bg-sky-800">
-                              <h3 className="text-left text-white font-medium">
-                                ChatBot
-                              </h3>
                               <p className="text-white max-w-sm md:max-w-xl">
                                 {q.content}
                               </p>
