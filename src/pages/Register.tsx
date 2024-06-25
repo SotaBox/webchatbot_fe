@@ -7,6 +7,8 @@ import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axiosRequest from "src/axiosManager/axiosRequest";
+import RegisterRequest from "src/types/auth/RegisterRequest";
 
 function Register() {
   const [isVisible, setIsVisible] = useState(false);
@@ -50,14 +52,25 @@ function Register() {
     resolver: zodResolver(schema),
   });
   const nagative = useNavigate();
-  const onSubmit: SubmitHandler<LoginRequest> = async (data: LoginRequest) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(data);
-      nagative(PAGE.CRAWL_DATA);
-    } catch (error) {
-      toast.warning("Login fail !!!");
-    }
+  const onSubmit: SubmitHandler<RegisterRequest> = async (
+    data: RegisterRequest
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    axiosRequest
+      .post("http://125.212.201.24:5000/auth/register", {
+        username: data.username,
+        password: data.password,
+        email: data.email,
+      })
+      // .get("https://reqres.in/api/users?page=2")
+      .then((response) => {
+        console.log("Respone data server: ", response.data);
+        toast.success("Register Suucessfull");
+        nagative(PAGE.LOGIN);
+      })
+      .catch((errors) => {
+        toast.error("Register failed !!!");
+      });
   };
 
   return (

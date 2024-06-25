@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableHeader,
@@ -21,6 +20,9 @@ import {
 import { columns, ISiteMap, siteMaps } from "./data";
 import { DeleteIcon, EditIcon } from "./icons";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Key, useCallback } from "react";
+import { useAppSelector } from "src/store";
+import { RootState } from "@reduxjs/toolkit/query";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   success: "success",
@@ -48,71 +50,68 @@ function CrawlData() {
   const modalDelete = useDisclosure();
   const modalCreate = useDisclosure();
 
-  // const urls = useAppSelector((state: RootState) => state.url.urls);
-  // console.log("URL data:", urls);
-  const renderCell = React.useCallback(
-    (siteMap: SiteMap, columnKey: React.Key) => {
-      const cellValue = siteMap[columnKey as keyof SiteMap];
+  const urls = useAppSelector((state) => state.url);
+  console.log("URL data:", urls);
+  const renderCell = useCallback((siteMap: SiteMap, columnKey: Key) => {
+    const cellValue = siteMap[columnKey as keyof SiteMap];
 
-      switch (columnKey) {
-        case "id":
-          return (
-            <div>
-              <div className="text-black">{cellValue}</div>
-            </div>
-          );
-        case "url":
-          return (
-            <div>
-              <div className="text-black text-overflow: ellipsis">
-                {cellValue}
-              </div>
-            </div>
-          );
-        case "content":
-          return (
-            <div>
-              <div className="">{cellValue}</div>
-            </div>
-          );
-        case "vector":
-          return (
-            <Chip
-              className="capitalize"
-              color={statusColorMap[siteMap.vector]}
-              size="sm"
-              variant="flat"
-            >
+    switch (columnKey) {
+      case "id":
+        return (
+          <div>
+            <div className="text-black">{cellValue}</div>
+          </div>
+        );
+      case "url":
+        return (
+          <div>
+            <div className="text-black text-overflow: ellipsis">
               {cellValue}
-            </Chip>
-          );
-        case "actions":
-          return (
-            <div className="relative flex items-center gap-2">
-              <Tooltip content="Edit Content">
-                <span
-                  onClick={modalEdit.onOpen}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                >
-                  <EditIcon />
-                </span>
-              </Tooltip>
-              <Tooltip color="danger" content="Delete URL">
-                <span
-                  onClick={modalDelete.onOpen}
-                  className="text-lg text-danger cursor-pointer active:opacity-50"
-                >
-                  <DeleteIcon />
-                </span>
-              </Tooltip>
             </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    []
-  );
+          </div>
+        );
+      case "content":
+        return (
+          <div>
+            <div className="">{cellValue}</div>
+          </div>
+        );
+      case "vector":
+        return (
+          <Chip
+            className="capitalize"
+            color={statusColorMap[siteMap.vector]}
+            size="sm"
+            variant="flat"
+          >
+            {cellValue}
+          </Chip>
+        );
+      case "actions":
+        return (
+          <div className="relative flex items-center gap-2">
+            <Tooltip content="Edit Content">
+              <span
+                onClick={modalEdit.onOpen}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              >
+                <EditIcon />
+              </span>
+            </Tooltip>
+            <Tooltip color="danger" content="Delete URL">
+              <span
+                onClick={modalDelete.onOpen}
+                className="text-lg text-danger cursor-pointer active:opacity-50"
+              >
+                <DeleteIcon />
+              </span>
+            </Tooltip>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
 
   return (
     <>
@@ -183,6 +182,7 @@ function CrawlData() {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
                   <Input
+                    disabled={isSubmitting}
                     className="font-bold"
                     autoFocus
                     startContent={

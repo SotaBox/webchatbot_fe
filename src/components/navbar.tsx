@@ -10,9 +10,9 @@ function NavBar() {
   };
   return (
     <>
-      <div className="w-[290px] fixed top-0 bottom-0 lg:left-0 p-2 overflow-y-auto bg-white min-h-screen relative">
-        <div className="flex flex-col">
-          <div>
+      <div className="w-[290px] fixed top-0 bottom-0 lg:left-0 p-2 overflow-y-auto bg-white min-h-screen relative ">
+        <div className="flex  flex-col">
+          <div className="">
             <div className="flex flex-row items-center justify-center space-x-1 p-2">
               <div className="text-3xl text-black font-bold">ChatBot</div>
               <svg

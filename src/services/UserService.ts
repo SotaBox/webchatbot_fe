@@ -18,10 +18,21 @@ export const UserService = {
   },
 
   refreshToken: (data: IGetRefreshToken, config?: AxiosRequestConfig) => {
-    return axios.post<IResponse<IResponseRefreshToken>>(
-      "/auth/refresh-token",
-      data,
-      { ...config, baseURL: import.meta.env.VITE_API_URL }
-    );
+    // config = {
+    //   ...config,
+    //   headers: {
+    //     ...config?.headers,
+    //     Authorization: `Bearer ${data.refreshToken}`,
+    //   },
+    //   baseURL: "http://125.212.201.24:5000",
+    // };
+
+    return axiosRequest.post("/auth/refresh_token", data, {
+      ...config,
+      headers: {
+        ...config?.headers,
+        Authorization: `Bearer ${data.refreshToken}`,
+      },
+    });
   },
 };

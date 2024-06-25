@@ -1,7 +1,26 @@
 import { Avatar, AvatarIcon } from "@nextui-org/react";
-import React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import axiosRequest from "src/axiosManager/axiosRequest";
 
 function Header() {
+  // const [email, setEmail] = useState<string>();
+
+  // const fetchProfileUser = async () => {
+  //   await axiosRequest
+  //     .get("http://125.212.201.24:5000/auth/get_profile")
+  //     .then((response) => {
+  //       setEmail(response.data.email);
+  //     })
+  //     .catch((error) => {
+  //       toast.error("Get profile user failed !!!");
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   fetchProfileUser();
+  // }, []);
+
   return (
     <div className="bg-white">
       <div className="flex items-center justify-end">

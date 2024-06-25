@@ -4,6 +4,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { createMigrate, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import auth from "./auth/reducer";
+import urls from "./urls/reducer";
+
 import { urlSlice } from "./urls";
 
 // Change version when update initialState in Reducer
@@ -28,9 +30,14 @@ const rootReducer = combineReducers({
     },
     auth
   ),
-  reducer: {
-    url: urlSlice.reducer,
-  },
+
+  url: persistReducer(
+    {
+      key: "url",
+      ...PERSIST_CONFIG,
+    },
+    urls
+  ),
 });
 
 export const store = createStore(rootReducer, composeWithDevTools());

@@ -219,7 +219,7 @@ I don't have an age like humans do because I'm an artificial intelligence create
               )}
             </div>
 
-            <div className="relative flex flex-row space-x-3 ">
+            <div className="relative flex flex-row space-x-3">
               <input
                 type="text"
                 placeholder="Enter your question"

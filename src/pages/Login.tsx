@@ -1,11 +1,13 @@
 import { Button, Input } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LoginRequest from "src/types/auth/LoginRequest";
 import { authActions, ILoginAuth, useAppDispatch } from "src/store";
 import { Link, useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
+import axiosRequest from "src/axiosManager/axiosRequest";
+import axios from "axios";
 
 function Login() {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,25 +19,33 @@ function Login() {
     formState: { errors, isSubmitting },
   } = useForm<LoginRequest>({
     defaultValues: {
-      username: "admin",
-      password: "admin",
+      username: "thangngo123468",
+      password: "Nguoitinhmuadong712@minnnn",
     },
   });
   const nagative = useNavigate();
   const dispatch = useAppDispatch();
-  const token: ILoginAuth = {
-    accessToken: "haioshd234jahida",
-    refreshToken: "haioshd234jahida",
-  };
   const onSubmit: SubmitHandler<LoginRequest> = async (data: LoginRequest) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(data);
-      dispatch(authActions.login(token));
-      nagative(PAGE.CRAWL_DATA);
-    } catch (error) {
-      toast.warning("Login fail !!!");
-    }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    axiosRequest
+      .post("http://125.212.201.24:5000/auth/login", {
+        username: data.username?.toString(),
+        password: data.password?.toString(),
+      })
+      .then((response) => {
+        console.log("Respone data server: ", response.data);
+        dispatch(
+          authActions.login({
+            accessToken: response.data.access_token,
+            refreshToken: response.data.refresh_token,
+          })
+        );
+        nagative(PAGE.CRAWL_DATA);
+        toast.success("Login successfull <3");
+      })
+      .catch((errors) => {
+        toast.error("Login failed !!!");
+      });
   };
   return (
     <>
@@ -65,6 +75,7 @@ function Login() {
           >
             <Input
               autoFocus
+              disabled={isSubmitting}
               label="Username"
               labelPlacement="outside"
               className="font-bold"
@@ -82,6 +93,7 @@ function Login() {
             />
 
             <Input
+              disabled={isSubmitting}
               label="Password"
               labelPlacement="outside"
               placeholder="Enter your password"

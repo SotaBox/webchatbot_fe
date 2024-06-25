@@ -4,18 +4,15 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-
 import { BASE_NAME, PAGE } from "src/constants/router";
-
 import { ProtectedRoute, PublicRoute } from "src/middleware";
 import ChatBot from "src/pages/ChatBot";
-
 import Login from "src/pages/Login";
 import { isAuthenticated } from "./helpers";
-import { Toaster } from "sonner";
 import NotFound from "src/pages/NotFound";
 import CrawlData from "src/pages/crawlData/CrawlData";
 import Register from "src/pages/Register";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,7 +49,8 @@ const router = createBrowserRouter(
 export function RouterManager() {
   return (
     <>
-      <Toaster position="top-center" /> <RouterProvider router={router} />
+      <Toaster richColors position="top-right" />
+      <RouterProvider router={router} />
     </>
   );
 }

@@ -20,7 +20,7 @@ const onRefreshed = (token: string) => {
 };
 
 const axiosRequest = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "http://125.212.201.24:5000",
   paramsSerializer: {
     serialize: (params) => {
       return QueryString.stringify(params, {
@@ -59,12 +59,9 @@ axiosRequest.interceptors.response.use(
     } = error;
     const originalRequest = config;
     const { refreshToken } = store.getState().auth;
-
     if (status === 401) {
       if (!refreshToken) {
-        const nagative = useNavigate();
         ReduxAuth.logout();
-        nagative(PAGE.LOGIN);
         return Promise.reject(error);
       }
 
@@ -74,11 +71,12 @@ axiosRequest.interceptors.response.use(
         try {
           // Get Refresh token
           const res = await UserService.refreshToken({ refreshToken });
-          const newAccessToken = res.data.data.token;
-
+          console.log("Response from api refresh token:", res);
+          const newAccessToken = res.data.access_token;
+          console.log("New Accesstoken: ", newAccessToken);
           ReduxAuth.login({
             accessToken: newAccessToken,
-            refreshToken: res.data.data.refreshToken,
+            refreshToken: res.data.refresh_token,
           });
 
           if (originalRequest.headers) {
@@ -89,9 +87,7 @@ axiosRequest.interceptors.response.use(
             return axios(originalRequest);
           }
         } catch (error) {
-          const nagative = useNavigate();
           ReduxAuth.logout();
-          nagative(PAGE.LOGIN);
           return Promise.reject(error);
         } finally {
           isRefreshing = false;
