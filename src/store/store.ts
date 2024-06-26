@@ -5,8 +5,7 @@ import { createMigrate, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import auth from "./auth/reducer";
 import urls from "./urls/reducer";
-
-import { urlSlice } from "./urls";
+import messages from "./messages/reducer";
 
 // Change version when update initialState in Reducer
 const VERSION_STORE = 9;
@@ -30,14 +29,8 @@ const rootReducer = combineReducers({
     },
     auth
   ),
-
-  url: persistReducer(
-    {
-      key: "url",
-      ...PERSIST_CONFIG,
-    },
-    urls
-  ),
+  url: urls,
+  message: messages,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools());

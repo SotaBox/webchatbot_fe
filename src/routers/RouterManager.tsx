@@ -10,9 +10,10 @@ import ChatBot from "src/pages/ChatBot";
 import Login from "src/pages/Login";
 import { isAuthenticated } from "./helpers";
 import NotFound from "src/pages/NotFound";
-import CrawlData from "src/pages/crawlData/CrawlData";
+
 import Register from "src/pages/Register";
 import { Toaster } from "sonner";
+import CrawlData from "src/pages/crawlData/CrawlData";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

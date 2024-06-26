@@ -1,8 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import QueryString from "qs";
-import { useNavigate } from "react-router-dom";
-
-import { PAGE } from "src/constants/router";
 import { UserService } from "src/services";
 
 import { ReduxAuth, store } from "src/store";
@@ -18,9 +15,9 @@ const subscribeTokenRefresh = (cb: IRequestCb) => {
 const onRefreshed = (token: string) => {
   refreshSubscribers.map((cb) => cb(token));
 };
-
+const DEFAULT_CHATBOT_API_URL: string = "";
 const axiosRequest = axios.create({
-  baseURL: "http://125.212.201.24:5000",
+  baseURL: import.meta.env.VITE_CHATBOT_API_URL || DEFAULT_CHATBOT_API_URL,
   paramsSerializer: {
     serialize: (params) => {
       return QueryString.stringify(params, {

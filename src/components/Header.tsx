@@ -4,22 +4,22 @@ import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
 
 function Header() {
-  // const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string>();
 
-  // const fetchProfileUser = async () => {
-  //   await axiosRequest
-  //     .get("http://125.212.201.24:5000/auth/get_profile")
-  //     .then((response) => {
-  //       setEmail(response.data.email);
-  //     })
-  //     .catch((error) => {
-  //       toast.error("Get profile user failed !!!");
-  //     });
-  // };
+  const fetchProfileUser = async () => {
+    await axiosRequest
+      .get("/auth/get-profile")
+      .then((response) => {
+        setEmail(response.data.email);
+      })
+      .catch((error) => {
+        toast.error("Get profile user failed !!!");
+      });
+  };
 
-  // useEffect(() => {
-  //   fetchProfileUser();
-  // }, []);
+  useEffect(() => {
+    fetchProfileUser();
+  }, []);
 
   return (
     <div className="bg-white">
@@ -33,7 +33,7 @@ function Header() {
             }}
           />
           <div className="flex flex-col">
-            <div className="font-bold text-xs">thang.ngo@sotatek.com</div>
+            <div className="font-bold text-xs">{email}</div>
             <div className="text-gray-500 text-sm">user</div>
           </div>
         </div>

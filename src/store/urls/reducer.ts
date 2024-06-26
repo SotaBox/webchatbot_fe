@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface Url {
+export interface IUrl {
   id: number;
   url: string;
   content: string;
   vector: string;
 }
 
-const initialState: Array<Url> = [
+export const initialState: Array<IUrl> = [
   {
     id: 1,
     url: "https://laodong.vn/",

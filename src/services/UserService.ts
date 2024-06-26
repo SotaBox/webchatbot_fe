@@ -18,21 +18,8 @@ export const UserService = {
   },
 
   refreshToken: (data: IGetRefreshToken, config?: AxiosRequestConfig) => {
-    // config = {
-    //   ...config,
-    //   headers: {
-    //     ...config?.headers,
-    //     Authorization: `Bearer ${data.refreshToken}`,
-    //   },
-    //   baseURL: "http://125.212.201.24:5000",
-    // };
-
-    return axiosRequest.post("/auth/refresh_token", data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        Authorization: `Bearer ${data.refreshToken}`,
-      },
+    return axiosRequest.post("/auth/refresh-token", {
+      refresh_token: data.refreshToken,
     });
   },
 };

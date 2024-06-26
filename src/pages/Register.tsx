@@ -1,7 +1,6 @@
 import { Button, Input } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import LoginRequest from "src/types/auth/LoginRequest";
 import { Link, useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
@@ -57,12 +56,11 @@ function Register() {
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     axiosRequest
-      .post("http://125.212.201.24:5000/auth/register", {
+      .post("/auth/register", {
         username: data.username,
         password: data.password,
         email: data.email,
       })
-      // .get("https://reqres.in/api/users?page=2")
       .then((response) => {
         console.log("Respone data server: ", response.data);
         toast.success("Register Suucessfull");

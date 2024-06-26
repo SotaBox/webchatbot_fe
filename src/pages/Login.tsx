@@ -2,12 +2,11 @@ import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LoginRequest from "src/types/auth/LoginRequest";
-import { authActions, ILoginAuth, useAppDispatch } from "src/store";
+import { authActions, useAppDispatch } from "src/store";
 import { Link, useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
-import axios from "axios";
 
 function Login() {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,12 +27,11 @@ function Login() {
   const onSubmit: SubmitHandler<LoginRequest> = async (data: LoginRequest) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     axiosRequest
-      .post("http://125.212.201.24:5000/auth/login", {
+      .post("/auth/login", {
         username: data.username?.toString(),
         password: data.password?.toString(),
       })
       .then((response) => {
-        console.log("Respone data server: ", response.data);
         dispatch(
           authActions.login({
             accessToken: response.data.access_token,
