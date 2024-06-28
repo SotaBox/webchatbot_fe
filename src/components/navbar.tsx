@@ -8,9 +8,10 @@ function NavBar() {
     dispatch(authActions.logout());
     navigate(PAGE.LOGIN);
   };
+
   return (
     <>
-      <div className="w-[290px] fixed top-0 bottom-0 lg:left-0 p-2 overflow-y-auto bg-white min-h-screen relative ">
+      <div className="w-1/6 lg:left-0 p-2 bg-white min-h-screen ">
         <div className="flex  flex-col">
           <div className="">
             <div className="flex flex-row items-center justify-center space-x-1 p-2">

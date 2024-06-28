@@ -1,4 +1,6 @@
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import axiosRequest from "src/axiosManager/axiosRequest";
 import { ReduxMessages } from "src/store/messages/reduxMessages";
 
 export default function MessageInput() {
@@ -13,13 +15,44 @@ export default function MessageInput() {
     },
     []
   );
-  const handleSubmit = () => {
-    ReduxMessages.createMessageUser(input);
-    setTimeout(() => {
-      ReduxMessages.createMessageBot();
-    }, 2000);
+  interface MessData {
+    "message-bot": string;
+  }
+  const handleSubmit = async () => {
+    await axiosRequest
+      .post("/chat/process-message", {
+        message: input,
+      })
+      .then((response) => {
+        const dataMess: MessData = response.data;
+        ReduxMessages.createMessageUser(input);
+        setTimeout(() => {
+          ReduxMessages.createMessageBot(dataMess["message-bot"]);
+        }, 2000);
+        setInput("");
+      })
+      .catch((errors) => {
+        toast.error("Api error message", errors);
+      });
     setInput("");
   };
+
+  // const handleSubmit2 = async () => {
+  //   try {
+  //     const data: MessData = await axiosRequest.post("/chat/process-message", {
+  //       message: input,
+  //     });
+  //     ReduxMessages.createMessageUser(input);
+  //     setTimeout(() => {
+  //       ReduxMessages.createMessageBot(data["message-bot"]);
+  //     }, 2000);
+  //   } catch (error) {
+  //     toast.error("Api error message");
+  //   } finally {
+  //     setInput("");
+  //   }
+  // };
+
   return (
     <div className="relative flex flex-row space-x-3">
       <input

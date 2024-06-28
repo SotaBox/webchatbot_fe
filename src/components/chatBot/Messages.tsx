@@ -2,6 +2,7 @@ import { Avatar } from "@nextui-org/react";
 import { useEffect, useRef } from "react";
 import Message from "src/types/chatbot/Message";
 import { UserRole } from "src/types/chatbot/UserRole";
+import LoadingMessages from "./LoadingMessages";
 interface IProps {
   messages: Message[];
 }
@@ -17,7 +18,7 @@ export default function Messages({ messages }: IProps) {
   }, [messages]);
 
   return (
-    <div className="flex flex-col space-y-6 max-w-6xl">
+    <div className="flex flex-col space-y-6 min-w-full h-[550px] overflow-auto">
       {messages?.map((mess, index) => {
         return (
           <>
