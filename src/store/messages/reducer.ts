@@ -85,18 +85,14 @@ export const messagesSlice = createSlice({
   reducers: {
     createMessageUser(state, action: PayloadAction<string>) {
       const newMessageUser: Message = {
-        id: Math.random().toString(),
         role: UserRole.USER,
-        createdAt: Date().toString(),
         content: action.payload,
       };
       state.push(newMessageUser);
     },
     createMessageBot(state, action: PayloadAction<string>) {
       const newMessageBot: Message = {
-        id: Math.random().toString(),
         role: UserRole.BOT,
-        createdAt: Date().toString(),
         content: action.payload,
       };
       state.push(newMessageBot);

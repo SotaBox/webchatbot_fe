@@ -1,4 +1,5 @@
 import {
+  Navigate,
   Route,
   RouterProvider,
   Routes,
@@ -30,14 +31,13 @@ const router = createBrowserRouter(
           element={<Register />}
           loader={async () => await isAuthenticated()}
         />
-        {/* <Route path="/" element={<Navigate to={PAGE.LOGIN} />} /> */}
       </Route>
 
       {/* <Route element={<MainLayout />}> */}
       <Route element={<ProtectedRoute />}>
         <Route path={PAGE.CRAWL_DATA} element={<CrawlData />} />
         <Route path={PAGE.CHAT_BOT} element={<ChatBot />} />
-        <Route path="/" element={<CrawlData />} />
+        <Route path="/" element={<Navigate to={PAGE.CRAWL_DATA} />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       {/* </Route> */}
