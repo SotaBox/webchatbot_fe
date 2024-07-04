@@ -5,16 +5,15 @@ import EditContentModal from "src/components/crawlData/EditContentModal";
 import DeleteUrlModal from "src/components/crawlData/DeleteUrlModal";
 import TableCrawlData from "src/components/crawlData/TableCrawlData";
 import HeaderTableCrawlData from "src/components/crawlData/HeaderTableCrawlData";
+import axiosRequest from "src/axiosManager/axiosRequest";
+import { toast } from "sonner";
 import { useEffect } from "react";
-
+import IGetUrl from "src/types/url/GetUrl";
 function CrawlData() {
   const modalEdit = useDisclosure();
   const modalDelete = useDisclosure();
   const modalCreate = useDisclosure();
-  const urls = useAppSelector((state) => state.url);
-  // useEffect(() => {
-
-  // })
+  // const urls = useAppSelector((state) => state.url);
   return (
     <>
       <EditContentModal modalEdit={modalEdit} />
@@ -22,12 +21,8 @@ function CrawlData() {
       <CreateUrlModal modalCreate={modalCreate} />
       <section>
         <div className="max-w-6xl mx-auto flex flex-col my-8 px-4">
-          <HeaderTableCrawlData modalCreate={modalCreate} />
-          <TableCrawlData
-            modalEdit={modalEdit}
-            modalDelete={modalDelete}
-            urls={urls}
-          />
+          {/* <HeaderTableCrawlData modalCreate={modalCreate} /> */}
+          <TableCrawlData modalEdit={modalEdit} modalDelete={modalDelete} />
         </div>
       </section>
     </>

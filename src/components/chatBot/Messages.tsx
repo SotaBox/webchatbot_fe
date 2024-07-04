@@ -10,8 +10,6 @@ interface IProps {
 }
 export default function Messages({ messages }: IProps) {
   const loading = useContext(LoadingContext);
-  console.log("loading", loading);
-
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -23,6 +21,7 @@ export default function Messages({ messages }: IProps) {
 
   return (
     <div className=" h-[32rem] overflow-auto py-3 px-5">
+      <div ref={messagesEndRef} />
       {messages?.map((mess, index) => {
         return (
           <>
@@ -122,7 +121,6 @@ export default function Messages({ messages }: IProps) {
           </div>
         </div>
       )}
-      <div ref={messagesEndRef} />
     </div>
   );
 }

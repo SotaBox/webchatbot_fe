@@ -1,5 +1,5 @@
 import { Button, Input, Spinner } from "@nextui-org/react";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
@@ -9,7 +9,7 @@ import { ReduxMessages } from "src/store/messages/reduxMessages";
 export default function MessageInput() {
   const loading = useContext(LoadingContext);
   type FormField = {
-    message: string;
+    messageUser: string;
   };
   const {
     register,
@@ -22,12 +22,13 @@ export default function MessageInput() {
     message: string;
   }
   const [value, setValue] = useState("");
+  // const [focusInput, setFocusInput] = useState(false);
   const onSubmit: SubmitHandler<FormField> = async (dataInput: FormField) => {
     try {
-      ReduxMessages.createMessageUser(dataInput.message);
+      ReduxMessages.createMessageUser(dataInput.messageUser);
       loading.setLoading(true);
       const data = await axiosRequest.post(
-        "https://mp94121220da9c45ed75.free.beeceptor.com/send-mess",
+        "https://mpec2b68ed6201d6cc96.free.beeceptor.com/send-message",
         {
           message: dataInput,
         }
@@ -38,10 +39,13 @@ export default function MessageInput() {
       toast.error("Api error message");
     } finally {
       reset();
-      setFocus("message");
+      // setFocusInput(true);
       loading.setLoading(false);
     }
   };
+  useEffect(() => {
+    setFocus("messageUser");
+  }, [loading]);
 
   const checkEmpty = useCallback(
     (input: string | undefined): boolean | void => {
@@ -66,7 +70,7 @@ export default function MessageInput() {
         variant="bordered"
         value={value}
         onValueChange={setValue}
-        {...register("message", { required: true })}
+        {...register("messageUser", { required: true })}
       />
 
       {checkEmpty(value) ? (
