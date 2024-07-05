@@ -178,11 +178,11 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
+        <div className="flex justify-between gap-1 md:gap-3">
           <Input
             isClearable
             variant="bordered"
-            className="w-full sm:max-w-[44%] bg-white rounded-xl"
+            className="w-[47%] sm:max-w-[44%] bg-white rounded-xl"
             placeholder="Search by url..."
             startContent={
               <svg
@@ -205,7 +205,7 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
             onValueChange={onSearchChange}
           />
           <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
+            <DropdownTrigger className=" sm:flex">
               <Button
                 className="bg-white "
                 endContent={

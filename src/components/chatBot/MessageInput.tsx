@@ -22,13 +22,12 @@ export default function MessageInput() {
     message: string;
   }
   const [value, setValue] = useState("");
-  // const [focusInput, setFocusInput] = useState(false);
   const onSubmit: SubmitHandler<FormField> = async (dataInput: FormField) => {
     try {
       ReduxMessages.createMessageUser(dataInput.messageUser);
       loading.setLoading(true);
       const data = await axiosRequest.post(
-        "https://mpec2b68ed6201d6cc96.free.beeceptor.com/send-message",
+        "https://mp59bbd54f0eedd51a8e.free.beeceptor.com/send-message",
         {
           message: dataInput,
         }
@@ -39,8 +38,8 @@ export default function MessageInput() {
       toast.error("Api error message");
     } finally {
       reset();
-      // setFocusInput(true);
       loading.setLoading(false);
+      debugger;
     }
   };
   useEffect(() => {

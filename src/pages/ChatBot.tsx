@@ -15,7 +15,7 @@ function ChatBot() {
   return (
     <>
       <section className="md:my-4 ">
-        <div className="mx-auto flex-1 md:max-w-[63rem] md:h-[37rem] bg-white">
+        <div className="md:mx-auto md:w-[63rem] md:h-[37rem] bg-white">
           <LoadingContext.Provider value={{ loading, setLoading }}>
             {isNewListMessage ? (
               <Messages messages={messages} />

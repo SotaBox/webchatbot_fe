@@ -1,6 +1,6 @@
 export default function EmptyMessages() {
   return (
-    <div className="h-[32rem] flex-1">
+    <div className="h-[37rem] md:h-[32rem]">
       <div className="pt-40">
         <div className="flex flex-col space-y-4">
           <svg

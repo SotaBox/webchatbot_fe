@@ -20,8 +20,7 @@ export default function Messages({ messages }: IProps) {
   }, [messages]);
 
   return (
-    <div className=" h-[32rem] overflow-auto py-3 px-5">
-      <div ref={messagesEndRef} />
+    <div className="h-[37rem] md:h-[32rem] overflow-auto py-3 px-5">
       {messages?.map((mess, index) => {
         return (
           <>
@@ -80,7 +79,7 @@ export default function Messages({ messages }: IProps) {
           </>
         );
       })}
-      {loading.loading && (
+      {/* {loading.loading && (
         <div className="flex flex-row space-x-4">
           <Avatar
             icon={
@@ -120,7 +119,8 @@ export default function Messages({ messages }: IProps) {
             </p>
           </div>
         </div>
-      )}
+      )} */}
+      <div ref={messagesEndRef} />
     </div>
   );
 }
