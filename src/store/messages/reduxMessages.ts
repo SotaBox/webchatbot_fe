@@ -5,7 +5,7 @@ export const ReduxMessages = {
   createMessageUser: (message: string) => {
     store.dispatch(messagesActions.createMessageUser(message));
   },
-  createMessageBot: () => {
-    store.dispatch(messagesActions.createMessageBot());
+  createMessageBot: (message: string) => {
+    store.dispatch(messagesActions.createMessageBot(message));
   },
 };

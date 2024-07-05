@@ -84,6 +84,7 @@ function Register() {
             className="flex flex-col gap-4"
           >
             <Input
+              disabled={isSubmitting}
               autoFocus
               label="Username"
               labelPlacement="outside"
@@ -102,6 +103,7 @@ function Register() {
             />
 
             <Input
+              disabled={isSubmitting}
               label="Email"
               labelPlacement="outside"
               className="font-bold"
@@ -118,6 +120,7 @@ function Register() {
               {...register("email")}
             />
             <Input
+              disabled={isSubmitting}
               label="Password"
               labelPlacement="outside"
               placeholder="Enter your password"
@@ -178,6 +181,7 @@ function Register() {
               {...register("password")}
             />
             <Input
+              disabled={isSubmitting}
               label="Confirm Password"
               labelPlacement="outside"
               placeholder="Enter your confirm password"
