@@ -13,7 +13,6 @@ import {
   DropdownMenu,
   DropdownItem,
   AvatarIcon,
-  User,
 } from "@nextui-org/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
