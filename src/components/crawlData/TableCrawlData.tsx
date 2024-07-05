@@ -23,7 +23,7 @@ import { DeleteIcon, EditIcon } from "src/pages/crawlData/icons";
 import IGetUrl from "src/types/url/GetUrl";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
-
+import { Selection } from "@react-types/shared";
 interface IProps {
   modalEdit: {
     onOpen: () => void;
@@ -49,7 +49,7 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
   const rowsPerPage = 6;
   const [filterValue, setFilterValue] = useState("");
   const hasSearchFilter = Boolean(filterValue);
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState<Selection>("all");
   const statusColorMap: Record<string, ChipProps["color"]> = {
     success: "success",
     fail: "danger",
