@@ -4,10 +4,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
 import { LoadingContext } from "src/pages/ChatBot";
+import { useAppSelector } from "src/store";
 import { ReduxMessages } from "src/store/messages/reduxMessages";
 
 export default function MessageInput() {
   const loading = useContext(LoadingContext);
+  const messages = useAppSelector((state) => state.message);
   type FormField = {
     messageUser: string;
   };
@@ -27,7 +29,7 @@ export default function MessageInput() {
       ReduxMessages.createMessageUser(dataInput.messageUser);
       loading.setLoading(true);
       const data = await axiosRequest.post(
-        "https://mp59bbd54f0eedd51a8e.free.beeceptor.com/send-message",
+        "https://mp46262ce68fe1e2e2d5.free.beeceptor.com/send-message",
         {
           message: dataInput,
         }

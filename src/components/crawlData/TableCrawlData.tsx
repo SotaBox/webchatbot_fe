@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
   Tooltip,
+  useDisclosure,
 } from "@nextui-org/react";
 import { columns } from "./Columns";
 import { Key, useCallback, useEffect, useMemo, useState } from "react";
@@ -24,6 +25,8 @@ import IGetUrl from "src/types/url/GetUrl";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
 import { Selection } from "@react-types/shared";
+import CreateUrlModal from "./CreateUrlModal";
+import HeaderTableCrawlData from "./HeaderTableCrawlData";
 interface IProps {
   modalEdit: {
     onOpen: () => void;
@@ -42,6 +45,7 @@ export function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
+  const modalCreate = useDisclosure();
   const [urls, seturls] = useState<Array<IGetUrl>>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -177,129 +181,159 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
 
   const topContent = useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-1 md:gap-3">
-          <Input
-            isClearable
-            variant="bordered"
-            className="w-[47%] sm:max-w-[44%] bg-white rounded-xl"
-            placeholder="Search by url..."
-            startContent={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
-            }
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <Dropdown>
-            <DropdownTrigger className=" sm:flex">
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between gap-1 md:gap-3">
+            <Input
+              isClearable
+              variant="bordered"
+              className="w-[47%] sm:max-w-[44%] bg-white rounded-xl"
+              placeholder="Search by url..."
+              startContent={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                  />
+                </svg>
+              }
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div className="flex gap-1 md:gap-3">
+              <Dropdown>
+                <DropdownTrigger className=" sm:flex">
+                  <Button
+                    className="bg-white "
+                    endContent={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                        />
+                      </svg>
+                    }
+                    variant="flat"
+                  >
+                    Vector Status
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Table Columns"
+                  closeOnSelect={false}
+                  selectedKeys={statusFilter}
+                  selectionMode="multiple"
+                  onSelectionChange={setStatusFilter}
+                >
+                  {statusOptions.map((status) => (
+                    <DropdownItem key={status.uid} className="capitalize">
+                      {capitalize(status.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
               <Button
-                className="bg-white "
+                onPress={modalCreate.onOpen}
+                color="primary"
                 endContent={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-4"
+                    stroke="white"
+                    className="size-5"
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                      d="M12 4.5v15m7.5-7.5h-15"
                     />
                   </svg>
                 }
-                variant="flat"
               >
-                Vector Status
+                Crawl URL
               </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={statusFilter}
-              selectionMode="multiple"
-              onSelectionChange={setStatusFilter}
-            >
-              {statusOptions.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
-                  {capitalize(status.name)}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }, [filterValue, statusFilter, onSearchChange, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells"
-      topContentPlacement="outside"
-      topContent={topContent}
-      bottomContent={
-        pages > 1 ? (
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        ) : null
-      }
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
-      className="my-4"
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-
-      <TableBody
-        loadingContent={<Spinner size="lg" />}
-        loadingState={loadingState}
-        emptyContent={"No rows to display."}
-        items={items}
+    <>
+      <HeaderTableCrawlData />
+      <CreateUrlModal modalCreate={modalCreate} />
+      <Table
+        aria-label="Example table with custom cells"
+        topContentPlacement="outside"
+        topContent={topContent}
+        bottomContent={
+          pages > 1 ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={page}
+                total={pages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          ) : null
+        }
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "max-h-[382px]",
+        }}
+        className="my-4"
       >
-        {(item: IGetUrl) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+
+        <TableBody
+          loadingContent={<Spinner size="lg" />}
+          loadingState={loadingState}
+          emptyContent={"No rows to display."}
+          items={items}
+        >
+          {(item: IGetUrl) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   );
 }
