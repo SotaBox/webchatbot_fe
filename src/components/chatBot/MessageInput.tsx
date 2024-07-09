@@ -21,27 +21,25 @@ export default function MessageInput() {
     formState: { isSubmitting },
   } = useForm<FormField>();
   interface MessData {
-    message: string;
+    "message-bot": string;
   }
   const [value, setValue] = useState("");
   const onSubmit: SubmitHandler<FormField> = async (dataInput: FormField) => {
     try {
       ReduxMessages.createMessageUser(dataInput.messageUser);
       loading.setLoading(true);
-      const data = await axiosRequest.post(
-        "https://mp46262ce68fe1e2e2d5.free.beeceptor.com/send-message",
-        {
-          message: dataInput,
-        }
-      );
+      const data = await axiosRequest.post("/chat/process-message", {
+        message: dataInput.messageUser,
+      });
       const dataMess: MessData = data.data;
-      ReduxMessages.createMessageBot(dataMess.message);
+      console.log("dataMess", dataMess["message-bot"]);
+
+      ReduxMessages.createMessageBot(dataMess["message-bot"]);
     } catch (error) {
       toast.error("Api error message");
     } finally {
-      reset();
+      reset({ messageUser: "" });
       loading.setLoading(false);
-      debugger;
     }
   };
   useEffect(() => {

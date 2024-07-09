@@ -67,7 +67,6 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
         "/chat/get_list_url?url=http/laodong"
       );
       seturls(data.data);
-      console.log("fetch data url", data.data);
     } catch (error) {
       toast.error("Api get url error message");
     } finally {

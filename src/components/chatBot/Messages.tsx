@@ -20,7 +20,7 @@ export default function Messages({ messages }: IProps) {
   }, [messages]);
 
   return (
-    <div className="h-[37rem] md:h-[32rem] overflow-auto py-3 px-5">
+    <div className="h-[37rem] md:h-[32rem] overflow-auto flex flex-col space-y-3 py-3 px-5">
       {messages?.map((mess, index) => {
         return (
           <>
