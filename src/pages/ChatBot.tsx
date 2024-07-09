@@ -9,7 +9,6 @@ export const LoadingContext = createContext({
 });
 function ChatBot() {
   const messages = useAppSelector((state) => state.message);
-  console.log("messages", messages);
   const isNewListMessage = Boolean(messages.length);
   const [loading, setLoading] = useState(false);
   return (

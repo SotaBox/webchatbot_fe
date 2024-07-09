@@ -4,10 +4,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
 import { LoadingContext } from "src/pages/ChatBot";
+import { useAppSelector } from "src/store";
 import { ReduxMessages } from "src/store/messages/reduxMessages";
 
 export default function MessageInput() {
   const loading = useContext(LoadingContext);
+  const messages = useAppSelector((state) => state.message);
   type FormField = {
     messageUser: string;
   };
@@ -19,27 +21,25 @@ export default function MessageInput() {
     formState: { isSubmitting },
   } = useForm<FormField>();
   interface MessData {
-    message: string;
+    "message-bot": string;
   }
   const [value, setValue] = useState("");
   const onSubmit: SubmitHandler<FormField> = async (dataInput: FormField) => {
     try {
       ReduxMessages.createMessageUser(dataInput.messageUser);
       loading.setLoading(true);
-      const data = await axiosRequest.post(
-        "https://mp59bbd54f0eedd51a8e.free.beeceptor.com/send-message",
-        {
-          message: dataInput,
-        }
-      );
+      const data = await axiosRequest.post("/chat/process-message", {
+        message: dataInput.messageUser,
+      });
       const dataMess: MessData = data.data;
-      ReduxMessages.createMessageBot(dataMess.message);
+      console.log("dataMess", dataMess["message-bot"]);
+
+      ReduxMessages.createMessageBot(dataMess["message-bot"]);
     } catch (error) {
       toast.error("Api error message");
     } finally {
-      reset();
+      reset({ messageUser: "" });
       loading.setLoading(false);
-      debugger;
     }
   };
   useEffect(() => {
