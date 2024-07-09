@@ -38,7 +38,7 @@ export default function MessageInput() {
     } catch (error) {
       toast.error("Api error message");
     } finally {
-      reset({ messageUser: "" });
+      reset();
       loading.setLoading(false);
     }
   };
