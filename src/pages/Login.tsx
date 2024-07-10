@@ -1,5 +1,5 @@
 import { Button, Input } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LoginRequest from "src/types/auth/LoginRequest";
 import { authActions, useAppDispatch } from "src/store";
@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { PAGE } from "src/constants/router";
 import { toast } from "sonner";
 import axiosRequest from "src/axiosManager/axiosRequest";
-import { ProtectedRoute } from "src/middleware";
 
 function Login() {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,7 +22,6 @@ function Login() {
       password: "Nguoitinhmuadong712@minnnn",
     },
   });
-  const nagative = useNavigate();
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<LoginRequest> = async (data: LoginRequest) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -39,7 +37,6 @@ function Login() {
             refreshToken: response.data.refresh_token,
           })
         );
-        // nagative(PAGE.CRAWL_DATA);
         toast.success("Login successfull <3");
       })
       .catch((errors) => {

@@ -19,7 +19,6 @@ export default function CreateUrlModal({ modalCreate }: IProps) {
   type FormField = {
     url: string;
   };
-
   const {
     register,
     handleSubmit,
