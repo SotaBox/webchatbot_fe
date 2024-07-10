@@ -1,6 +1,8 @@
 # build stage
 FROM node:18.18.1 as build-stage
 WORKDIR /app
+
+ARG VITE_CHATBOT_API_URL
 COPY . .
 # RUN yarn && yarn build
 COPY package.json yarn.lock ./
