@@ -4,6 +4,6 @@ import { useAppSelector } from "src/store";
 
 export function PublicRoute() {
   const accessToken = useAppSelector((state) => state.auth.accessToken);
-  if (accessToken) return <Navigate to={PAGE.CRAWL_DATA} />;
+  if (accessToken) return <Navigate to={PAGE.SITE_MAP} />;
   return <Outlet />;
 }

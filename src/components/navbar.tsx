@@ -75,6 +75,19 @@ export default function NavBar() {
             className={({ isActive }) =>
               isActive
                 ? "text-black font-bold"
+                : "text-slate-400 hover:text-black"
+            }
+            to={PAGE.SITE_MAP}
+            aria-current="page"
+          >
+            SiteMap
+          </NavLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "text-black font-bold"
                 : "text-slate-400 hover:text-black "
             }
             to={PAGE.CRAWL_DATA}
@@ -96,34 +109,6 @@ export default function NavBar() {
           </NavLink>
         </NavbarItem>
       </NavbarContent>
-
-      {/* <NavbarContent className="hidden sm:flex sm:gap-2" justify="end">
-        <Dropdown placement="bottom">
-          <DropdownTrigger>
-            <Avatar
-              icon={<AvatarIcon />}
-              classNames={{
-                base: "bg-gradient-to-br from-[#71717A] to-[#27272A]",
-                icon: "text-white/80",
-              }}
-            />
-          </DropdownTrigger>
-          <DropdownMenu variant="flat">
-            <DropdownItem
-              className="text-center"
-              key="logout"
-              color="danger"
-              onClick={() => logout()}
-            >
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-        <div className="flex flex-col">
-          <div className="font-bold text-xs">{email}</div>
-          <div className="text-gray-500 text-sm">user</div>
-        </div>
-      </NavbarContent> */}
 
       <NavbarContent as="div" justify="end">
         <Dropdown placement="bottom-end">
@@ -154,6 +139,16 @@ export default function NavBar() {
 
       <NavbarMenu>
         <NavbarMenuItem className="space-y-2">
+          <NavbarItem>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "text-black font-bold" : "text-slate-400 font-bold"
+              }
+              to={PAGE.SITE_MAP}
+            >
+              Site Map
+            </NavLink>
+          </NavbarItem>
           <NavbarItem>
             <NavLink
               className={({ isActive }) =>

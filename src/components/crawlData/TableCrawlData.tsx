@@ -60,21 +60,38 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
     inprogress: "warning",
     null: "default",
   };
-  const fetchUrls = async () => {
-    try {
-      setLoading(true);
-      const data = await axiosRequest.get(
-        "/chat/get_list_url?url=http/laodong"
-      );
-      seturls(data.data);
-    } catch (error) {
-      toast.error("Api get url error message");
-    } finally {
-      setLoading(false);
-    }
+  // const fetchUrls = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const data = await axiosRequest.get(
+  //       "/chat/get_list_url?url=http/laodong"
+  //     );
+  //     seturls(data.data);
+  //   } catch (error) {
+  //     toast.error("Api get url error message");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchUrls();
+  // }, []);
+  const fetchProfileUser = async () => {
+    await axiosRequest
+      .post("/crawl/crawl-sitemap", {
+        url: "https://laodong.vn",
+      })
+      .then((response) => {
+        // setEmail(response.data);
+        console.log("response cral", response.data);
+      })
+      .catch((error) => {
+        toast.error("Get profile user failed !!!");
+      });
   };
+
   useEffect(() => {
-    fetchUrls();
+    fetchProfileUser();
   }, []);
 
   const filteredItems = useMemo(() => {
