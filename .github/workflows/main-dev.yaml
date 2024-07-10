@@ -50,11 +50,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ env.REPOSITORY_NAME }}/${{ env.PROJECT_NAME }}/fe:latest
-          # build-args: |
-          #     REACT_APP_API_URL=https://dev.data-platform-api.sotaicg.com/api/v1
-          #     REACT_APP_DOMAIN_API_SDK=dev.data-platform-api.sotaicg.com/
-          #     REACT_APP_CHUNK_SIZE_MB=100
-          #     REACT_APP_GOOGLE_CLIENT_ID=81963526024-m0rt10khegk1fici68g7punu1spuqnhs.apps.googleusercontent.com
+          build-args: |
+              VITE_CHATBOT_API_URL=http://125.212.201.24:5000
         
   deploy:
     needs: build
