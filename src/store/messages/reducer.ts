@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import Message from "src/types/chatbot/Message";
 import { UserRole } from "src/types/chatbot/UserRole";
 
-// const initialState: Array<Message> = [
 //   {
 //     id: "1",
 //     content: "How are you",
@@ -35,48 +34,6 @@ import { UserRole } from "src/types/chatbot/UserRole";
 //     createdAt: Date().toString(),
 //   },
 // ];
-
-const generateMessage = () => {
-  const words = [
-    "The sky",
-    "above",
-    "the port",
-    "was",
-    "the color of television",
-    "tuned",
-    "to",
-    "a dead channel",
-    ".",
-    "All",
-    "this happened",
-    "more or less",
-    ".",
-    "I",
-    "had",
-    "the story",
-    "bit by bit",
-    "from various people",
-    "and",
-    "as generally",
-    "happens",
-    "in such cases",
-    "each time",
-    "it",
-    "was",
-    "a different story",
-    ".",
-    "It",
-    "was",
-    "a pleasure",
-    "to",
-    "burn",
-  ];
-  const text = [];
-  let x = 7;
-  while (--x) text.push(words[Math.floor(Math.random() * words.length)]);
-  return text.join(" ");
-};
-
 const initialState: Array<Message> = [];
 
 export const messagesSlice = createSlice({
