@@ -1,4 +1,9 @@
-import { Action, combineReducers, ThunkAction } from "@reduxjs/toolkit";
+import {
+  Action,
+  combineReducers,
+  ThunkAction,
+  ThunkDispatch,
+} from "@reduxjs/toolkit";
 import { legacy_createStore as createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createMigrate, persistReducer, persistStore } from "redux-persist";
@@ -6,6 +11,7 @@ import storage from "redux-persist/lib/storage";
 import auth from "./auth/reducer";
 import urls from "./urls/reducer";
 import messages from "./messages/reducer";
+import sitemap from "./siteMap/reducer";
 
 // Change version when update initialState in Reducer
 const VERSION_STORE = 9;
@@ -31,6 +37,7 @@ const rootReducer = combineReducers({
   ),
   url: urls,
   message: messages,
+  sitemap: sitemap,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools());

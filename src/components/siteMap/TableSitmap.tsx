@@ -1,5 +1,6 @@
 import {
   getKeyValue,
+  Pagination,
   Spinner,
   Table,
   TableBody,
@@ -8,132 +9,104 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { Key, useCallback, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import axiosRequest from "src/axiosManager/axiosRequest";
 import { Selection } from "@react-types/shared";
-import GetSitemap from "src/types/sitemap/GetSitemap";
+import { toast } from "sonner";
+import { SiteMapContext } from "src/pages/SiteMap";
+import { ReduxSitemap } from "src/store/siteMap";
+import { useAppSelector } from "src/store";
 export default function TableSitmap() {
-  const [selectedColor, setSelectedColor] = useState("default");
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
-  const rows = [
-    {
-      id: "22",
-      name: "Tony Reichert",
-      role: "CEO",
-      status: "Active",
-    },
-    {
-      id: "2",
-      name: "Zoey Lang",
-      role: "Technical Lead",
-      status: "Paused",
-    },
-    {
-      id: "3",
-      name: "Jane Fisher",
-      role: "Senior Developer",
-      status: "Active",
-    },
-    {
-      id: "4",
-      name: "William Howard",
-      role: "Community Manager",
-      status: "Vacation",
-    },
-  ];
+  const url = useContext(SiteMapContext);
+  const [loading, setLoading] = useState(false);
+  const loadingState = loading ? "loading" : "idle";
+  const sitemap = useAppSelector((state) => state.sitemap);
+  const fetchSitemap = async () => {
+    if (url.url === "") return;
+    try {
+      setLoading(true);
+      const data = await axiosRequest.get(
+        `/crawl/get-sitemap?parent_link=${url.url}`
+      );
+      ReduxSitemap.createSitemap(data.data);
+    } catch (error) {
+      toast.error("Get api list urls server failed !!!");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchSitemap();
+  }, [url]);
+
   const columns = [
     {
-      id: "name",
-      label: "NAME",
+      key: "id",
+      label: "ID",
     },
     {
-      id: "role",
-      label: "ROLE",
-    },
-    {
-      id: "status",
-      label: "STATUS",
+      key: "link",
+      label: "LINK",
     },
   ];
-  const [siteMaps, setSiteMaps] = useState<Array<GetSitemap>>([
-    { id: "11", url: "http://laodong.vn" },
-    { id: "22", url: "http://laodong.vn" },
-    { id: "33", url: "http://laodong.vn" },
-    { id: "44", url: "http://laodong.vn" },
-    { id: "55", url: "http://laodong.vn" },
-    { id: "62", url: "http://laodong.vn" },
-    { id: "73", url: "http://laodong.vn" },
-    { id: "85", url: "http://laodong.vn" },
-    { id: "96", url: "http://laodong.vn" },
-    { id: "12", url: "http://laodong.vn" },
-    { id: "41", url: "http://laodong.vn" },
-    { id: "52", url: "http://laodong.vn" },
-  ]);
-  type SiteMaps = (typeof siteMaps)[0];
-  //   const columns = [
-  //     { name: "ID", uid: "id" },
-  //     { name: "URL", uid: "url" },
-  //   ];
-  const renderCell = useCallback((siteMaps: SiteMaps, columnKey: Key) => {
-    const cellValue = siteMaps[columnKey as keyof SiteMaps];
-    switch (columnKey) {
-      case "id":
-        return (
-          <div>
-            <div className="text-black">{cellValue}</div>
-          </div>
-        );
-      case "url":
-        return (
-          <div>
-            <div className="text-black text-overflow: ellipsis">
-              {cellValue}
-            </div>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
-  return (
-    // <Table aria-label="Example table with custom cells">
-    //   <TableHeader columns={columns}>
-    //     {(column) => (
-    //       <TableColumn
-    //         key={column.uid}
-    //         align={column.uid === "actions" ? "center" : "start"}
-    //       >
-    //         {column.name}
-    //       </TableColumn>
-    //     )}
-    //   </TableHeader>
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 8;
 
-    //   <TableBody
-    //     loadingContent={<Spinner size="lg" />}
-    //     emptyContent={"No links to display."}
-    //   >
-    //     {(item: GetSitemap) => (
-    //       <TableRow key={item.id}>
-    //         {(columnKey) => (
-    //           <TableCell>{renderCell(item, columnKey)}</TableCell>
-    //         )}
-    //       </TableRow>
-    //     )}
-    //   </TableBody>
-    // </Table>
+  const pages = Math.ceil(sitemap.length / rowsPerPage);
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return sitemap.slice(start, end);
+  }, [page, sitemap]);
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const handleSubmit = async () => {
+    try {
+      console.log("select url", selectedKeys);
+    } catch (error) {
+      toast.error("Get api post send urls failed !!!");
+    } finally {
+    }
+  };
+  return (
     <>
       <Table
+        hideHeader
         aria-label="Controlled table example with dynamic content"
         selectionMode="multiple"
+        bottomContent={
+          pages > 1 ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={page}
+                total={pages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          ) : null
+        }
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
+        classNames={{
+          wrapper: "min-h-[222px]",
+        }}
       >
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn key={column.id}>{column.label}</TableColumn>
+            <TableColumn key={column.key}>{column.label}</TableColumn>
           )}
         </TableHeader>
-        <TableBody items={rows}>
+        <TableBody
+          loadingContent={<Spinner size="lg" />}
+          loadingState={loadingState}
+          emptyContent={"No links to display."}
+          items={items}
+        >
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
@@ -143,8 +116,6 @@ export default function TableSitmap() {
           )}
         </TableBody>
       </Table>
-      <p>select checkbox is {selectedKeys}</p>
-      <p>Get name by id {rows.filter((item) => item.id === "11")}</p>
     </>
   );
 }

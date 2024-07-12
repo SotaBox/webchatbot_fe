@@ -76,23 +76,6 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
   // useEffect(() => {
   //   fetchUrls();
   // }, []);
-  const fetchProfileUser = async () => {
-    await axiosRequest
-      .post("/crawl/crawl-sitemap", {
-        url: "https://laodong.vn",
-      })
-      .then((response) => {
-        // setEmail(response.data);
-        console.log("response cral", response.data);
-      })
-      .catch((error) => {
-        toast.error("Get profile user failed !!!");
-      });
-  };
-
-  useEffect(() => {
-    fetchProfileUser();
-  }, []);
 
   const filteredItems = useMemo(() => {
     let filteredUsers = [...urls];
@@ -266,28 +249,6 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
                   ))}
                 </DropdownMenu>
               </Dropdown>
-              <Button
-                onPress={modalCreate.onOpen}
-                color="primary"
-                endContent={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="white"
-                    className="size-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                }
-              >
-                Crawl URL
-              </Button>
             </div>
           </div>
         </div>
@@ -298,7 +259,6 @@ export default function TableCrawlData({ modalEdit, modalDelete }: IProps) {
   return (
     <>
       <HeaderTableCrawlData />
-      <CreateUrlModal modalCreate={modalCreate} />
       <Table
         aria-label="Example table with custom cells"
         topContentPlacement="outside"
