@@ -1,6 +1,6 @@
 # About The Project
 
-A website that helps you crawl data from any link and can create your own chatbot using the data you have crawled.
+A website that helps you crawl data from any link and can create your own chatbot using the data you have crawled
 
 # Built With
 
