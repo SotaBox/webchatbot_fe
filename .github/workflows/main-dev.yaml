@@ -18,6 +18,8 @@ env:
 jobs:
   build:
     runs-on: [self-hosted, linux, x64]
+    outputs:
+      output1: ${{ steps.SHA_ID.outputs.TAG_SHA }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,15 +45,24 @@ jobs:
           fi
           echo "Tag: $TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
-      - name: Build and push to Harbor repository
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ env.REPOSITORY_NAME }}/${{ env.PROJECT_NAME }}/fe:latest
-          build-args: |
-              VITE_CHATBOT_API_URL=http://125.212.201.24:5000
+          
+      - name: Build Harbor repository
+        run: |
+          docker build \
+            --build-arg VITE_CHATBOT_API_URL=http://125.212.201.24:5000 \
+            -t ${{ env.REPOSITORY_NAME }}/${{ env.PROJECT_NAME }}/fe:latest .
+
+      - name: Push to repository
+        run: docker push ${{ env.REPOSITORY_NAME }}/${{ env.PROJECT_NAME }}/fe:latest
+
+      - name: Get Docker image digest
+        id: SHA_ID
+        run: |
+          TAG_SHA1=$(docker inspect --format='{{index .RepoDigests 0}}' "${{ env.REPOSITORY_NAME }}/${{ env.PROJECT_NAME }}/fe:latest" | cut -d '@' -f 2-)
+          echo "TAG_SHA=$TAG_SHA1" >> $GITHUB_OUTPUT
+
+      - name: Output
+        run: echo ${{ steps.SHA_ID.outputs.TAG_SHA }}
         
   deploy:
     needs: build
@@ -60,11 +71,15 @@ jobs:
     steps:
         
       - name: Updating for new configuration (webchatbot)
+        env:
+          OUTPUT1: ${{needs.build.outputs.output1}}
         run: |
           ls
           cd /home/epc/intern
           export FILE_NAME=docker-compose.yaml
           export SERVICE=fe
+          sed -i "/^\s*fe:/,/^\s*[^ ]/ s|^\(\s*image:\s*\).*|\1registry.sotaicg.com/intern/fe:latest@$OUTPUT1|" docker-compose.yaml
+          
           docker compose -f $FILE_NAME stop $SERVICE && docker compose -f $FILE_NAME rm -f $SERVICE && docker compose -f $FILE_NAME pull $SERVICE && docker compose -f $FILE_NAME up --build $SERVICE -d
     
   report:
