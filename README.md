@@ -18,3 +18,6 @@ yarn dev
 ```
 
 Open (http://localhost:3000) with your browser to see the result.
+
+
+<!-- Security scan triggered at 2026-10-07 14:41:06 -->
